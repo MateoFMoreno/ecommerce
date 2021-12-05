@@ -21,7 +21,6 @@ passport.use(
             }
             return done(null, user, { message: "Login successfull" });
         } catch (error) {
-            console.log(error);
             return done(error);
         }
     })

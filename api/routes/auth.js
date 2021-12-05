@@ -5,10 +5,6 @@ const AuthController = require("../controller/auth");
 
 const router = express.Router();
 
-//rutas para ver si anda facebook y google
-router.get("/failed", (req, res) => res.send("Failed"));
-router.get("/good", (req, res) => res.send(`Welcome ${req.user}`));
-
 // GET
 router.get("/me", AuthController.findMyUser);
 router.get("/logout", AuthController.logoutUser);

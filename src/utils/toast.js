@@ -6,7 +6,7 @@ export function success(msj) {
     });
 }
 
-export function fail(msj) {
+export function error(msj) {
     toast.error(msj, {
         position: toast.POSITION.TOP_CENTER,
     });

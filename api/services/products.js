@@ -1,4 +1,5 @@
 const Product = require("../models/Products");
+const search = require("../utils/searchProducts");
 
 class ProductsService {
     static async allProducts() {
@@ -11,49 +12,19 @@ class ProductsService {
         }
     }
 
+    static async searchProducts(type, name) {
+        try {
+            const resp = await search[type](name);
+
+            return { error: false, data: resp };
+        } catch (error) {
+            return { error: true, data: error.message };
+        }
+    }
+
     static async getProductById(id) {
         try {
-            const product = await Product.findById(id).populate("");
-
-            return { error: false, data: product };
-        } catch (error) {
-            return { error: true, data: error.message };
-        }
-    }
-
-    static async getProductsByCategoryName(name) {
-        try {
-            const product = await Product.find({ category: { $regex: name, $options: "i" } }).populate("reviews._id");
-
-            return { error: false, data: product };
-        } catch (error) {
-            return { error: true, data: error.message };
-        }
-    }
-
-    static async getProductsByCityName(name) {
-        try {
-            const product = await Product.find({ "location.city": { $regex: name, $options: "i" } }).populate("reviews._id");
-
-            return { error: false, data: product };
-        } catch (error) {
-            return { error: true, data: error.message };
-        }
-    }
-
-    static async getProductsByProvinceName(name) {
-        try {
-            const product = await Product.find({ "location.provincia": { $regex: name, $options: "i" } }).populate("reviews._id");
-
-            return { error: false, data: product };
-        } catch (error) {
-            return { error: true, data: error.message };
-        }
-    }
-
-    static async getProductsByTitleName(name) {
-        try {
-            const product = await Product.find({ title: { $regex: name, $options: "i" } }).populate("reviews._id");
+            const product = await Product.findById(id).populate("reviews._id");
 
             return { error: false, data: product };
         } catch (error) {

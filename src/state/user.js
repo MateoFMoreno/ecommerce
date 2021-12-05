@@ -3,7 +3,6 @@ import { createAsyncThunk, createReducer, createAction } from "@reduxjs/toolkit"
 import axios from "axios";
 
 export const postUserLoged = createAsyncThunk("userLoged", (user) => {
-    console.log("LOGIN", user);
     return axios.post(`/api/auth/login`, user).then((res) => {
         return res.data
     });
@@ -16,9 +15,6 @@ export const postUserRegister = createAsyncThunk("userRegister", (user) => {
         .then((res) => {
             return res.data;
         })
-        .catch((err) => {
-            console.log(err);
-        });
 });
 
 export const removeFromBasket = createAsyncThunk("REMOVE_FROM_BASKET", ({user, id}) => {
@@ -44,9 +40,3 @@ const reducerUser = createReducer(
 );
 
 export default reducerUser;
-
-// export const addToBasket = createAsyncThunk("ADD_TO_BASKET", (id, cantidad) => {
-//     return axios.post(`/api/users/${id}/basket`, { _id: id, cantidad: cantidad }).then(res => res)
-// });
-
-

@@ -47,7 +47,6 @@ class AdminService {
             
             return { error: false, data: user };
         } catch (error) {
-            console.log(error)
             return { error: true, data: error.message };
         }
     }

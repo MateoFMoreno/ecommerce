@@ -1,4 +1,4 @@
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 
 const User = require("../models/Users");
@@ -6,7 +6,7 @@ const Product = require("../models/Products");
 const History = require("../models/History");
 
 const joi = require("../config/joi");
-const transporter = require("../config/mailer");
+// const transporter = require("../config/mailer");
 const getTotal = require("../utils/getTotal");
 
 class UserServices {
@@ -39,8 +39,6 @@ class UserServices {
     static async getBasket(id) {
         try {
             const basket = await User.findOne({ _id: id }).populate("carrito._id", { title: 1, price: 1, cantidad: 1 });
-
-            console.log(basket);
 
             return { error: false, data: basket };
         } catch (error) {
@@ -130,44 +128,43 @@ class UserServices {
 
             await Product.updateMany({ _id: { $in: carrito } }, { $push: { historial: savedHistory._id } }, { new: true });
 
-            const history = await savedHistory.populate("product._id", {
-                title: 1,
-                price: 1,
-                cantidad: 1,
-                _id: 0,
-            });
+
+            // comentado porque no tiene el env
+
+            // const history = await savedHistory.populate("product._id", {
+            //     title: 1,
+            //     price: 1,
+            //     cantidad: 1,
+            //     _id: 0,
+            // });
         
-            await transporter.sendMail(
-                {
-                    from: `"Adventure" <${process.env.NODEMAILER_EMAIL}>"`,
-                    to: user.email,
-                    subject: "Order confirmation",
-                    html: `
-                        <p>Username: ${user.name}</p>
-                        <p>Purchase: </p>
-                            <ul>${history.product
-                                .map((product, i) => {
-                                    return `
-                                    <p>item: ${i + 1}</p>
-                                    <li>product: ${product._id.title}</li>
-                                    <li>price: ${product._id.price}</li>
-                                    <li>cantidad: ${product.cantidad}</li>
-                                    `;
-                                })
-                                .join("")}</ul>
-                            </ul>
-                        <p>Total: $ ${total}</p>
-                    `,
-                },
-                (err, info) => {
-                    console.log(info.envelope);
-                    console.log(info.messageId);
-                }
-            );
+            // await transporter.sendMail(
+            //     {
+            //         from: `"Adventure" <${process.env.NODEMAILER_EMAIL}>"`,
+            //         to: user.email,
+            //         subject: "Order confirmation",
+            //         html: `
+            //             <p>Username: ${user.name}</p>
+            //             <p>Purchase: </p>
+            //                 <ul>${history.product
+            //                     .map((product, i) => {
+            //                         return `
+            //                         <p>item: ${i + 1}</p>
+            //                         <li>product: ${product._id.title}</li>
+            //                         <li>price: ${product._id.price}</li>
+            //                         <li>cantidad: ${product.cantidad}</li>
+            //                         `;
+            //                     })
+            //                     .join("")}</ul>
+            //                 </ul>
+            //             <p>Total: $ ${total}</p>
+            //         `,
+            //     }
+            // );
 
             return { error: false, data: user };
         } catch (error) {
-            console.log('EL ERROR', error.message)
+            
             return { error: true, data: error.message };
         }
     }
