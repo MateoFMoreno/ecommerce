@@ -47,3 +47,7 @@
 - No es responsive.
 
 - Password mayor a 8 caracteres y tambien un numero como minimo.
+
+- Para ingresar como admin logear con esta información:
+  -email: admin@adventure.com
+  -password: admin123
