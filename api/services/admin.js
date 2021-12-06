@@ -5,7 +5,7 @@ const History = require("../models/History");
 class AdminService {
     static async getUsers(id) {
         try {
-            const user = await User.find({_id: {$ne: id}});
+            const user = await User.find({ $and: [{ email: "admin@adventure.com" }, { _id: { $ne: id } }] });
 
             return { error: false, data: user };
         } catch (error) {
@@ -26,7 +26,7 @@ class AdminService {
     static async promoteOrDescendAdmin(id, admin) {
         try {
             const user = await User.findOneAndUpdate(
-                {_id: id},
+                { _id: id },
                 {
                     $set: {
                         admin: !admin,
@@ -44,7 +44,7 @@ class AdminService {
     static async getAllHistory() {
         try {
             const user = await History.find({}).populate("user product._id");
-            
+
             return { error: false, data: user };
         } catch (error) {
             return { error: true, data: error.message };
